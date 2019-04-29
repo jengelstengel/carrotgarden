@@ -4,6 +4,9 @@ window.onload = function(){
 
     var $liveSnap = $("#liveSnap"),
         $container = $("#container"),
+        $edgeResistance = $('#edgeResistance'),
+        $throwProps = $('#throwProps'),       
+        edgeResistance = 0.6,
         gridWidth = 200,
         gridHeight = 200,
         gridRows = 5,
@@ -20,12 +23,13 @@ window.onload = function(){
     TweenLite.set(".box", {width:gridWidth, height:gridHeight, lineHeight:gridHeight + "px"});
 
     function update() {
-    var liveSnap = $liveSnap.prop("checked");
+    var liveSnap = $liveSnap.prop("checked"),
+        throwProps = $throwProps.prop("checked");
         Draggable.create(".box", {
             bounds:$container,
-            edgeResistance:0.65,
+            edgeResistance:edgeResistance,
             type:"x,y",
-            throwProps:true,
+            throwProps:throwProps,
             autoScroll:true,
             liveSnap:liveSnap,
             snap:{
@@ -52,6 +56,20 @@ window.onload = function(){
                 });
             });
         }
+        update();
+    }
+
+    $throwProps.on("change", applyThrow);
+
+    function applyThrow(){
+        throwProps = $throwProps.prop("checked");
+        update();
+}
+
+    $edgeResistance.on("change", applyResistance);
+
+    function applyResistance(){
+        edgeResistance = $edgeResistance.context.activeElement.value;
         update();
     }
     update();
